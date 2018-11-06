@@ -23,8 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddLocationActivity"
-            android:parentActivityName=".MainActivity"
+        <activity
+            android:name=".AddLocationActivity"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".SearchActivity"
+            android:parentActivityName=".AddLocationActivity"
             android:configChanges="orientation|screenSize"></activity>
     </application>
 
