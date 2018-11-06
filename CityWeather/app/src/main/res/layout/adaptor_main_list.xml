@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/city_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+
+        android:textColor="@color/TextIcons"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/country_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/TextIcons"
+
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_weather_main"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/d116" />
+
+        <TextView
+            android:id="@+id/temp_main"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center_vertical"
+            android:textSize="40sp"
+            android:textColor="@color/TextIcons"
+            android:layout_weight="1"
+             />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/feels_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/TextIcons"
+
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/weather_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/TextIcons"
+
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/date_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/TextIcons"
+
+        android:textSize="20sp" />
+</LinearLayout>
