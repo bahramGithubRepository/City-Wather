@@ -15,7 +15,7 @@
         android:elevation="4dp"
         />
 
-    <com.mrbahram.citywather.TouchListView
+    <com.mrbahram.myapplication.TouchListView
         android:id="@+id/list_location"
         android:layout_below="@+id/add_location_toolbar"
         android:layout_height="match_parent"
