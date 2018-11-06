@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/action_add_location"
+        android:icon="@mipmap/addlocation"
+        android:title="@string/Add_Location"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_refresh"
+        app:showAsAction="never"
+        android:title="refresh"/>
+
+
+
+</menu>

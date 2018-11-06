@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">City Wather</string>
+    <string name="Add_Location">Add location</string>
 </resources>
