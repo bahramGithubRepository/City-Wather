@@ -1,9 +1,8 @@
-package com.mrbahram.citywather.Repository;
+package com.mrbahram.cityweather.Repository;
 
 import android.os.AsyncTask;
 
-import com.mrbahram.citywather.Interface.FetchDataCallbackInterface;
-import com.mrbahram.citywather.Interface.FetchDataCallbackInterface.ResultFor;
+import com.mrbahram.cityweather.Interface.FetchDataCallbackInterface;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -28,10 +27,10 @@ public class FetchDataFromWebAPI extends AsyncTask<String,Void,String> {
      * 1- ResultFor.Search: It is a output/input for searching a city name.
      * 2- ResultFor.Weather:It is output/input for searching  weather for specific city.
      */
-    ResultFor resultFor;
+    FetchDataCallbackInterface.ResultFor resultFor;
     private final int API_URL =0;
 
-    public FetchDataFromWebAPI(FetchDataCallbackInterface callbackInterface,ResultFor resultFor) {
+    public FetchDataFromWebAPI(FetchDataCallbackInterface callbackInterface,FetchDataCallbackInterface.ResultFor resultFor) {
         this.callbackInterface = callbackInterface;
         this.resultFor=resultFor;
     }

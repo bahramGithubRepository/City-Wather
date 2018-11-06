@@ -1,4 +1,4 @@
-package com.mrbahram.citywather;
+package com.mrbahram.cityweather;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.mrbahram.citywather.Models.WeatherModel;
-import com.mrbahram.citywather.Repository.DatabaseHelper;
+import com.mrbahram.cityweather.Models.WeatherModel;
+
+import com.mrbahram.cityweather.Repository.DatabaseHelper;
+
 import java.util.ArrayList;
 
 /**

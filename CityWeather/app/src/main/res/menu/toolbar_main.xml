@@ -4,8 +4,8 @@
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/action_add_location"
-        android:icon="@mipmap/addlocation"
-        android:title="@string/Add_Location"
+        android:icon="@mipmap/location"
+        android:title="@string/add_location"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_refresh"

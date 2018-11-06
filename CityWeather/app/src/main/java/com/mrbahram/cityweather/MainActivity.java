@@ -1,4 +1,4 @@
-package com.mrbahram.citywather;
+package com.mrbahram.cityweather;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +18,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mrbahram.citywather.Interface.FetchDataCallbackInterface;
-import com.mrbahram.citywather.Models.WeatherModel;
-import com.mrbahram.citywather.Repository.DatabaseHelper;
+import com.mrbahram.cityweather.Interface.FetchDataCallbackInterface;
+import com.mrbahram.cityweather.Models.WeatherModel;
+import com.mrbahram.cityweather.Repository.DatabaseHelper;
 
-import com.mrbahram.citywather.Repository.FetchDataFromWebAPI;
+import com.mrbahram.cityweather.Repository.FetchDataFromWebAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,17 +1,15 @@
-package com.mrbahram.citywather.Repository;
+package com.mrbahram.cityweather.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mrbahram.citywather.Models.WeatherModel;
+import com.mrbahram.cityweather.Models.WeatherModel;
 
 
 /**

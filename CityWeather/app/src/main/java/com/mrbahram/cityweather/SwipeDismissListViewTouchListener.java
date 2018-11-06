@@ -1,4 +1,4 @@
-package com.mrbahram.citywather;
+package com.mrbahram.cityweather;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

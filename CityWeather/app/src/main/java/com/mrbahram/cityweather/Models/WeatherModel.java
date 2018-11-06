@@ -1,4 +1,4 @@
-package com.mrbahram.citywather.Models;
+package com.mrbahram.cityweather.Models;
 
 /**
  * Weather Model

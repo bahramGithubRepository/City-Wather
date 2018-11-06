@@ -15,7 +15,7 @@
         android:elevation="4dp"
         />
 
-    <com.mrbahram.myapplication.TouchListView
+    <com.mrbahram.cityweather.TouchListView
         android:id="@+id/list_location"
         android:layout_below="@+id/add_location_toolbar"
         android:layout_height="match_parent"
@@ -43,10 +43,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end|bottom"
+
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
         android:clickable="true"
-
-        app:srcCompat="@mipmap/add"
-
-        />
+        app:srcCompat="@mipmap/add" />
 
 </RelativeLayout>

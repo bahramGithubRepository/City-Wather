@@ -1,11 +1,10 @@
-package com.mrbahram.citywather;
+package com.mrbahram.cityweather;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -23,12 +22,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mrbahram.citywather.Interface.FetchDataCallbackInterface;
-import com.mrbahram.citywather.Models.SearchModel;
-import com.mrbahram.citywather.Models.WeatherModel;
-import com.mrbahram.citywather.Repository.DatabaseHelper;
+import com.mrbahram.cityweather.Interface.FetchDataCallbackInterface;
+import com.mrbahram.cityweather.Models.SearchModel;
+import com.mrbahram.cityweather.Models.WeatherModel;
+import com.mrbahram.cityweather.Repository.DatabaseHelper;
 
-import com.mrbahram.citywather.Repository.FetchDataFromWebAPI;
+import com.mrbahram.cityweather.Repository.FetchDataFromWebAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;

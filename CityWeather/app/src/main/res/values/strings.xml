@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">City Wather</string>
-    <string name="Add_Location">Add location</string>
+    <string name="app_name">City Weather</string>
+    <string name="add_location">Add location</string>
 </resources>

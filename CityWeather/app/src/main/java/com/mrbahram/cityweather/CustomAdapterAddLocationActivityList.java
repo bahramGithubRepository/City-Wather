@@ -1,4 +1,4 @@
-package com.mrbahram.citywather;
+package com.mrbahram.cityweather;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,15 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.mrbahram.cityweather.Models.WeatherModel;
 
-import com.mrbahram.citywather.Models.WeatherModel;
 
 import java.util.ArrayList;
 
 /**
- * This is a custom adaptor for the ListView of the MainActivity
+ * This is a custom adaptor for the ListView of the AddLocationActivity
  */
-public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
+public class CustomAdapterAddLocationActivityList extends ArrayAdapter<WeatherModel>{
 
     private ArrayList<WeatherModel> dataSet;
     Context mContext;
@@ -26,13 +26,12 @@ public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
         TextView txtCountry;
         TextView txtDate;
         TextView txtTemp;
-        TextView txtWeather;
         TextView txtFeels;
         ImageView imgWeather;
     }
 
-    public CustomAdaptorMainList(ArrayList<WeatherModel> data, Context context) {
-        super(context, R.layout.adaptor_main_list
+    public CustomAdapterAddLocationActivityList(ArrayList<WeatherModel> data, Context context) {
+        super(context, R.layout.adapter_layout_location_list
                 , data);
         this.dataSet = data;
         this.mContext=context;
@@ -46,40 +45,42 @@ public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
         // Get the data item for this position
         WeatherModel dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
-        CustomAdaptorMainList.ViewHolder viewHolder; // view lookup cache stored in tag
+        ViewHolder viewHolder; // view lookup cache stored in tag
 
         final View result;
 
         if (convertView == null) {
 
-            viewHolder = new CustomAdaptorMainList.ViewHolder();
+            viewHolder = new ViewHolder();
 
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.adaptor_main_list, parent, false);
-            viewHolder.txtCityName = (TextView) convertView.findViewById(R.id.city_main);
-            viewHolder.txtCountry = (TextView) convertView.findViewById(R.id.country_main);
-            viewHolder.txtDate = (TextView) convertView.findViewById(R.id.date_main);
-            viewHolder.txtTemp = (TextView) convertView.findViewById(R.id.temp_main);
-            viewHolder.txtWeather= (TextView) convertView.findViewById(R.id.weather_main);
-            viewHolder.txtFeels = (TextView) convertView.findViewById(R.id.feels_main);
-            viewHolder.imgWeather = (ImageView) convertView.findViewById(R.id.img_weather_main);
+            convertView = inflater.inflate(R.layout.adapter_layout_location_list, parent, false);
+            viewHolder.txtCityName = (TextView) convertView.findViewById(R.id.city_name);
+            viewHolder.txtCountry = (TextView) convertView.findViewById(R.id.country);
+            viewHolder.txtDate = (TextView) convertView.findViewById(R.id.date);
+            viewHolder.txtTemp = (TextView) convertView.findViewById(R.id.temp);
+            viewHolder.txtFeels = (TextView) convertView.findViewById(R.id.feels);
+            viewHolder.imgWeather = (ImageView) convertView.findViewById(R.id.img_weather);
 
             result=convertView;
 
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (CustomAdaptorMainList.ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
             result=convertView;
         }
 
         lastPosition = position;
 
         viewHolder.txtCityName.setText(dataModel.getCityName());
+
+        viewHolder.txtCityName.setTextColor(mContext.getResources().getColor(R.color.PrimaryText) );
         viewHolder.txtCountry.setText(dataModel.getRegion()+", "+dataModel.getCountry());
+        viewHolder.txtCountry.setTextColor(mContext.getResources().getColor(R.color.SecondaryText) );
         viewHolder.txtDate.setText(dataModel.getLocalTime());
+        viewHolder.txtDate.setTextColor(mContext.getResources().getColor(R.color.SecondaryText) );
         viewHolder.txtTemp.setText(dataModel.getTemperature_C()+"");
-        viewHolder.txtWeather.setText(dataModel.getWeatherCondition());
-        viewHolder.txtFeels.setText("Feels Like "+dataModel.getFeelsLike_c());
+        viewHolder.txtFeels.setText(dataModel.getWeatherCondition());
         viewHolder.imgWeather.setImageResource(MainActivity.imageCollection.get(dataModel.getIcon()));
 
 
@@ -88,8 +89,5 @@ public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
 
     }
 
-
 }
-
-
 

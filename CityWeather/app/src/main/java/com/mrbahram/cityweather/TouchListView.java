@@ -1,4 +1,4 @@
-package com.mrbahram.citywather;
+package com.mrbahram.cityweather;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,6 +20,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
 
 public class TouchListView extends ListView {
     private ImageView mDragView;

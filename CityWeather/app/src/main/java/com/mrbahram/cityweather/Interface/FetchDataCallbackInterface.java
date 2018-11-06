@@ -1,4 +1,4 @@
-package com.mrbahram.citywather.Interface;
+package com.mrbahram.cityweather.Interface;
 
 public interface FetchDataCallbackInterface {
     /**
