@@ -1,6 +1,7 @@
 package com.mrbahram.cityweather;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,15 @@ import android.widget.TextView;
 import com.mrbahram.cityweather.Models.WeatherModel;
 
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This is a custom adaptor for the ListView of the AddLocationActivity
  */
 public class CustomAdapterAddLocationActivityList extends ArrayAdapter<WeatherModel>{
 
-    private ArrayList<WeatherModel> dataSet;
+    private List<WeatherModel> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -30,9 +32,9 @@ public class CustomAdapterAddLocationActivityList extends ArrayAdapter<WeatherMo
         ImageView imgWeather;
     }
 
-    public CustomAdapterAddLocationActivityList(ArrayList<WeatherModel> data, Context context) {
-        super(context, R.layout.adapter_layout_location_list
-                , data);
+    //public CustomAdapterAddLocationActivityList(List<WeatherModel> data, Context context) {
+    public CustomAdapterAddLocationActivityList( Context context,List<WeatherModel> data) {
+        super(context, R.layout.adapter_layout_location_list,data);
         this.dataSet = data;
         this.mContext=context;
 
@@ -43,7 +45,8 @@ public class CustomAdapterAddLocationActivityList extends ArrayAdapter<WeatherMo
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        WeatherModel dataModel = getItem(position);
+        WeatherModel dataModel =dataSet.get(position);// getItem(position);
+        Log.d("new order", "new order "+dataModel.getCityName());
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -72,12 +75,15 @@ public class CustomAdapterAddLocationActivityList extends ArrayAdapter<WeatherMo
 
         lastPosition = position;
 
-        viewHolder.txtCityName.setText(dataModel.getCityName());
+        if(dataModel.isDefaultItem())
+            viewHolder.txtCityName.setText(dataModel.getCityName()+"  (Default)");
+        else
+            viewHolder.txtCityName.setText(dataModel.getCityName());
 
         viewHolder.txtCityName.setTextColor(mContext.getResources().getColor(R.color.PrimaryText) );
         viewHolder.txtCountry.setText(dataModel.getRegion()+", "+dataModel.getCountry());
         viewHolder.txtCountry.setTextColor(mContext.getResources().getColor(R.color.SecondaryText) );
-        viewHolder.txtDate.setText(dataModel.getLocalTime());
+        viewHolder.txtDate.setText("Updated "+dataModel.getLocalTime());
         viewHolder.txtDate.setTextColor(mContext.getResources().getColor(R.color.SecondaryText) );
         viewHolder.txtTemp.setText(dataModel.getTemperature_C()+"");
         viewHolder.txtFeels.setText(dataModel.getWeatherCondition());
@@ -88,6 +94,9 @@ public class CustomAdapterAddLocationActivityList extends ArrayAdapter<WeatherMo
         return convertView;
 
     }
-
+    void setWeather(List<WeatherModel> weather){
+        dataSet = weather;
+        notifyDataSetChanged();
+    }
 }
 

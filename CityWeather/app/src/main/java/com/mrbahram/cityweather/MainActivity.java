@@ -1,5 +1,6 @@
 package com.mrbahram.cityweather;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,52 +18,57 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mrbahram.cityweather.Interface.FetchDataCallbackInterface;
 import com.mrbahram.cityweather.Models.WeatherModel;
-import com.mrbahram.cityweather.Repository.DatabaseHelper;
-
 import com.mrbahram.cityweather.Repository.FetchDataFromWebAPI;
-
+import com.mrbahram.cityweather.ViewModels.WeatherViewModel;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements FetchDataCallbackInterface {
     // hash table for finding image id based on the image name.
     public static HashMap<String,Integer>imageCollection=new HashMap<>();
     SwipeRefreshLayout swipeRefreshLayout;
-    public static WeatherModel SelectedCity=null;
-    ArrayList<WeatherModel> CityName;
+    List<WeatherModel> CityName;
     ArrayAdapter<WeatherModel> mAdapter;
     ListView mListView;
     TextView mEmptyView;
-    DatabaseHelper repository=new DatabaseHelper(this);
+
     WeatherModel firstCity=null;
+    private WeatherViewModel mWeatherViewModel;
+
+    public static final int Add_Location_ACTIVITY_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Inserts all image name in the collection for further request.
         if(imageCollection.size()<=0){
             insertImageToImageCollection();
         }
         setContentView(R.layout.activity_main);
-
+        //Initialize Toolbar
         Toolbar toolbar=(Toolbar)findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
+        //Initialize the list view
         mListView=(ListView)findViewById(R.id.list_main);
+        //Initialize empty view of the list view
         mEmptyView=(TextView)findViewById(R.id.emptyView_main);
         mListView.setEmptyView(mEmptyView);
         CityName=new ArrayList<>();
-        firstCity=repository.getFirst();
+        //Initialize View Model
+        mWeatherViewModel=ViewModelProviders.of(this).get(WeatherViewModel.class);
+        firstCity=mWeatherViewModel.getDefaultItem();
         if(firstCity!=null)
             CityName.add(firstCity);
+        //Initialize the adaptor of list view
         mAdapter=new CustomAdaptorMainList(CityName,getApplicationContext());
         mListView.setAdapter(mAdapter);
-
+        //Initialize SwipeRefreshLayout
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -82,23 +88,33 @@ public class MainActivity extends AppCompatActivity implements FetchDataCallback
 
     }
 
-
     /**
      * reset or set data when the application come from child activity
      */
     @Override
     protected void onResume() {
         super.onResume();
-        if(SelectedCity!=null){
-            CityName.clear();
-            CityName.add(SelectedCity);
-            mAdapter.notifyDataSetChanged();
-        }else if(firstCity==null){
-            CityName.clear();
+        if(mAdapter.getCount()>0){
+            WeatherModel model=mWeatherViewModel.getWeather(mAdapter.getItem(0).getCityName());
+            if(model==null)
+                mAdapter.clear();// reset adaptor when the default data has been deleted in the child activity.
+
             mAdapter.notifyDataSetChanged();
         }
 
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        //Gets selected item value in the child activity and update UI view
+        if (requestCode == Add_Location_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            String city = data.getStringExtra(AddLocationActivity.EXTRA_REPLY);
+            mAdapter.clear();
+            WeatherModel weather=mWeatherViewModel.getWeather(city);
+            mAdapter.add(weather);
+            mAdapter.notifyDataSetChanged();
+
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements FetchDataCallback
             //call AddLocationActivity when the location icon touched.
             case R.id.action_add_location:
 
-                startActivity(new Intent(this, AddLocationActivity.class));
+                startActivityForResult(new Intent(this, AddLocationActivity.class),Add_Location_ACTIVITY_REQUEST_CODE);
                 return true;
             // Check if user triggered a refresh:
             case R.id.menu_refresh:
@@ -130,12 +146,13 @@ public class MainActivity extends AppCompatActivity implements FetchDataCallback
     //==========Helper Function============
 
     /**
-     * call when re-load data has been requested
+     * call when re-load data has been requested(pull to refresh has been triggered)
      * @param lat
      * @param lon
      */
     private void getCityWeather(double lat,double lon){
 
+        //Checks internet connection
         if(isInternetConnection()) {
             String url = "http://api.apixu.com/v1/current.json?key=2c02c64e6f33476c901180818183110&" +
                     "q=" + Double.toString(lat) + "," + Double.toString(lon);
@@ -181,14 +198,13 @@ public class MainActivity extends AppCompatActivity implements FetchDataCallback
                 String icon=condition.getString("icon").split("cdn.apixu.com/",2)[1];
                 weatherModel.setIcon(icon);
                 weatherModel.setFeelsLike_c(current.getDouble("feelslike_c"));
-
-                repository.update(weatherModel);
+                weatherModel.setOrderValue(CityName.get(0).getOrderValue());
+                weatherModel.setDefaultItem(true);
+                mWeatherViewModel.updateWeather(weatherModel);
                 CityName.clear();
                 CityName.add(weatherModel);
                 mAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
-
-                //Toast.makeText(MainActivity.this, weatherModel.getCityName()+" updated", Toast.LENGTH_SHORT).show();
 
             }
         } catch (JSONException e) {

@@ -10,14 +10,15 @@ import android.widget.TextView;
 
 import com.mrbahram.cityweather.Models.WeatherModel;
 
-import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * This is a custom adaptor for the ListView of the MainActivity
  */
 public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
 
-    private ArrayList<WeatherModel> dataSet;
+    private List<WeatherModel> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -31,7 +32,7 @@ public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
         ImageView imgWeather;
     }
 
-    public CustomAdaptorMainList(ArrayList<WeatherModel> data, Context context) {
+    public CustomAdaptorMainList(List<WeatherModel> data, Context context) {
         super(context, R.layout.adaptor_main_list
                 , data);
         this.dataSet = data;
@@ -76,7 +77,7 @@ public class CustomAdaptorMainList extends ArrayAdapter<WeatherModel> {
 
         viewHolder.txtCityName.setText(dataModel.getCityName());
         viewHolder.txtCountry.setText(dataModel.getRegion()+", "+dataModel.getCountry());
-        viewHolder.txtDate.setText(dataModel.getLocalTime());
+        viewHolder.txtDate.setText("Updated "+dataModel.getLocalTime());
         viewHolder.txtTemp.setText(dataModel.getTemperature_C()+"");
         viewHolder.txtWeather.setText(dataModel.getWeatherCondition());
         viewHolder.txtFeels.setText("Feels Like "+dataModel.getFeelsLike_c());

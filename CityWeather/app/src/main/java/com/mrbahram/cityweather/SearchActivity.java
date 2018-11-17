@@ -1,5 +1,6 @@
 package com.mrbahram.cityweather;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,62 +22,63 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mrbahram.cityweather.Interface.FetchDataCallbackInterface;
 import com.mrbahram.cityweather.Models.SearchModel;
 import com.mrbahram.cityweather.Models.WeatherModel;
-import com.mrbahram.cityweather.Repository.DatabaseHelper;
-
 import com.mrbahram.cityweather.Repository.FetchDataFromWebAPI;
-
+import com.mrbahram.cityweather.ViewModels.WeatherViewModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class SearchActivity extends AppCompatActivity implements FetchDataCallbackInterface {
     ArrayAdapter<String> mAdapter;
     ListView mListView;
     TextView mEmptyView;
-    ArrayList<String> CityList;
-    ArrayList<SearchModel> listOfCity;
-    DatabaseHelper repository=new DatabaseHelper(this);
+    List<String> CityList;
+    List<SearchModel> listOfCity;
+    private WeatherViewModel mWeatherViewModel;
+    private final int MINIMUM_STRING_LENGTH_FOR_SEARCH=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        //Initialize Toolbar
         Toolbar myChildToolbar =
                 (Toolbar) findViewById(R.id.search_toolbar);
         myChildToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(myChildToolbar);
-
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
+        //Initialize ViewModel
+        mWeatherViewModel=ViewModelProviders.of(this).get(WeatherViewModel.class);
+        //Initialize the list view
         mListView=(ListView)findViewById(R.id.list_search);
+        //Initialize empty view of the list view
         mEmptyView=(TextView)findViewById(R.id.emptyView);
         mListView.setEmptyView(mEmptyView);
         CityList=new ArrayList<>();
-
+        //Initialize adaptor of the list view
         mAdapter= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CityList);
         mListView.setAdapter(mAdapter);
+        // add action listener on each row
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String cityName=adapterView.getItemAtPosition(i).toString();
 
+                //Finds selected item information
                 for(SearchModel item:listOfCity){
                     if(item.getCityName().equals(cityName)){
                         double  lat=item.getLat();
                         double  lon=item.getLon();
-
                         getCityWeather(lat,lon);
                         break;
                     }
@@ -88,11 +90,10 @@ public class SearchActivity extends AppCompatActivity implements FetchDataCallba
 
     /**
      * Call webAPI to get city's weather
-     * @param lat
-     * @param lon
+
      */
     private void getCityWeather(double lat,double lon){
-        //SwipeRefreshLayout.setRefreshing(true);
+        //checks internet connection before access to webAPI
         if(isInternetConnection()) {
             String url = "http://api.apixu.com/v1/current.json?key=2c02c64e6f33476c901180818183110&" +
                     "q=" + Double.toString(lat) + "," + Double.toString(lon);
@@ -106,7 +107,7 @@ public class SearchActivity extends AppCompatActivity implements FetchDataCallba
         getMenuInflater().inflate(R.menu.toolbar_search, menu);
 
         MenuItem mSearch = menu.findItem(R.id.app_bar_search);
-
+        //sets default focus on the search view
         SearchView mSearchView = (SearchView) mSearch.getActionView();
         mSearchView.setQueryHint("Search");
         mSearchView.requestFocusFromTouch();
@@ -137,12 +138,11 @@ public class SearchActivity extends AppCompatActivity implements FetchDataCallba
      * @param newCityName is a new city name.
      */
     protected void getNewData(String newCityName) {
-        if(isInternetConnection()){
-            String url="http://api.apixu.com/v1/search.json?key=2c02c64e6f33476c901180818183110&q="+newCityName;
+        if (isInternetConnection()) {
+            String url = "http://api.apixu.com/v1/search.json?key=2c02c64e6f33476c901180818183110&q=" + newCityName;
+            new FetchDataFromWebAPI(this, ResultFor.Search).execute(url);
 
-            new FetchDataFromWebAPI(this,ResultFor.Search).execute(url);
-
-        }else{
+        } else {
             Toast.makeText(this, " No Internet Connection!!!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -186,9 +186,8 @@ public class SearchActivity extends AppCompatActivity implements FetchDataCallba
      * @param result is a JSON object related for a search of the city name
      */
     protected void UpdateListView(String result){
-        Log.d("My code", "fetchDataCallback 1 : "+result);
         try {
-            listOfCity=new ArrayList<SearchModel>();
+            listOfCity=new ArrayList<>();
 
             JSONArray jsonArray=new JSONArray(result);
 
@@ -198,15 +197,14 @@ public class SearchActivity extends AppCompatActivity implements FetchDataCallba
                 double lon=jsonArray.getJSONObject(i).getDouble("lon");
                 listOfCity.add(new SearchModel(city,lat,lon));
             }
+            //reset list adaptor
             mAdapter.clear();
-
+            //Adds the new values to list adaptor
             for(SearchModel item:listOfCity){
                 mAdapter.insert(item.getCityName(),mAdapter.getCount());
             }
-
+            //notifies UI View
             mAdapter.notifyDataSetChanged();
-
-
         } catch (JSONException e) {
             Log.d("My code", "fetchDataCallback 0: result is not JSON Array");
         }
@@ -234,9 +232,8 @@ public class SearchActivity extends AppCompatActivity implements FetchDataCallba
                 String icon=condition.getString("icon").split("cdn.apixu.com/",2)[1];
                 weatherModel.setIcon(icon);
                 weatherModel.setFeelsLike_c(current.getDouble("feelslike_c"));
-
-                repository.add(weatherModel);
-
+                weatherModel.setOrderValue(mWeatherViewModel.getNewOrderNumber());
+                mWeatherViewModel.insertWeather(weatherModel);
                 //close the activity and come back to parent activity
                 finish();
             }

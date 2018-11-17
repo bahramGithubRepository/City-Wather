@@ -1,20 +1,50 @@
 package com.mrbahram.cityweather.Models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 /**
  * Weather Model
- * It can be used for saving weather result of WEB API
+ * It can be used for saving weather result of WEB API in the database
  */
+//Table name
+@Entity(tableName = "weather")
 public class WeatherModel {
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "cityName")
     private String cityName;
+    @ColumnInfo(name = "region")
     private String region;
+    @ColumnInfo(name = "country")
     private String country;
+    @ColumnInfo(name = "lat")
     private double lat;
+    @ColumnInfo(name = "lon")
     private double lon;
+    @ColumnInfo(name = "localTime")
     private String localTime;
+    @ColumnInfo(name = "temperature_C")
     private  double temperature_C;
+    @ColumnInfo(name = "weatherCondition")
     private String weatherCondition;
+    @ColumnInfo(name = "icon")
     private String icon;
+    @ColumnInfo(name = "feelsLike_c")
     private double feelsLike_c;
+    /**
+     * This property saves order of object in a list. Minimum value is 1.
+     */
+    @ColumnInfo(name = "orderValue")
+    private  int orderValue;
+    /**
+     * This property clarifies a object is a default.
+     * The defaultItem must be true when the object has been selected in the AddLocationActivity list.
+     */
+    @ColumnInfo(name="defaultItem")
+    private boolean defaultItem=false;
 
 
     public String getCityName() {
@@ -96,4 +126,19 @@ public class WeatherModel {
         this.feelsLike_c = feelsLike_c;
     }
 
+    public int getOrderValue() {
+        return orderValue;
+    }
+
+    public void setOrderValue(int orderValue) {
+        this.orderValue = orderValue;
+    }
+
+    public boolean isDefaultItem() {
+        return defaultItem;
+    }
+
+    public void setDefaultItem(boolean defaultItem) {
+        this.defaultItem = defaultItem;
+    }
 }
