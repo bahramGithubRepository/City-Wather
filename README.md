@@ -21,6 +21,7 @@ The weather informaiton of each city in this version of the application doesn't 
 ![viewmodel](https://user-images.githubusercontent.com/26363869/48663146-01b8a800-ea8c-11e8-9e01-755a5b8985aa.png)
 
 For more information about View model [click here]( https://developer.android.com/topic/libraries/architecture/viewmodel#java) and about Room Persistence [click here](https://developer.android.com/topic/libraries/architecture/room)
+
 2- The selected item by a user in the list will be chosen as a default item instead of the first city of the list.
 ## Future work
 
