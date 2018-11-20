@@ -96,14 +96,7 @@ public class AddLocationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View arg1, int position,
                                     long arg3) {
                 WeatherModel selectedItem=(WeatherModel) adapterView.getItemAtPosition(position);
-                mWeatherViewModel.resetAllDefaultItem();
                 mWeatherViewModel.setAsDefaultItem(selectedItem.getCityName());
-
-                // Create an Intent to go to parent activity and pass city name to parent activity for further request.
-                Intent upIntent = NavUtils.getParentActivityIntent(AddLocationActivity.this);
-                upIntent.putExtra(EXTRA_REPLY, selectedItem.getCityName());
-                setResult(RESULT_OK, upIntent);
-
                 finish();
             }
         });

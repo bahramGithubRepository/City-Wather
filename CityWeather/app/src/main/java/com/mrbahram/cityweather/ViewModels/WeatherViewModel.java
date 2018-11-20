@@ -62,14 +62,15 @@ public class WeatherViewModel extends AndroidViewModel {
      * @param cityName : primary key of the object
      */
     public void setAsDefaultItem(String cityName){
+        mRepository.resetAllDefaultItem();
         mRepository.setAsDefaultItem(cityName);
     }
     /**
      * sets False to all defaultItem value
      */
-    public void resetAllDefaultItem(){
+    /*public void resetAllDefaultItem(){
         mRepository.resetAllDefaultItem();
-    }
+    }*/
     /**
      * Update an object
      * @param weather

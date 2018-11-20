@@ -58,11 +58,12 @@ public class MainActivity extends AppCompatActivity implements FetchDataCallback
         mListView=(ListView)findViewById(R.id.list_main);
         //Initialize empty view of the list view
         mEmptyView=(TextView)findViewById(R.id.emptyView_main);
+        mEmptyView.setText("Could't find any default weather !!!");
         mListView.setEmptyView(mEmptyView);
         CityName=new ArrayList<>();
         //Initialize View Model
         mWeatherViewModel=ViewModelProviders.of(this).get(WeatherViewModel.class);
-        firstCity=mWeatherViewModel.getDefaultItem();
+        firstCity=null;//mWeatherViewModel.getDefaultItem();
         if(firstCity!=null)
             CityName.add(firstCity);
         //Initialize the adaptor of list view
@@ -94,28 +95,17 @@ public class MainActivity extends AppCompatActivity implements FetchDataCallback
     @Override
     protected void onResume() {
         super.onResume();
-        if(mAdapter.getCount()>0){
-            WeatherModel model=mWeatherViewModel.getWeather(mAdapter.getItem(0).getCityName());
-            if(model==null)
-                mAdapter.clear();// reset adaptor when the default data has been deleted in the child activity.
 
-            mAdapter.notifyDataSetChanged();
-        }
-
-    }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //Gets selected item value in the child activity and update UI view
-        if (requestCode == Add_Location_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            String city = data.getStringExtra(AddLocationActivity.EXTRA_REPLY);
+        WeatherModel model=mWeatherViewModel.getDefaultItem();
+        if(model==null)
             mAdapter.clear();
-            WeatherModel weather=mWeatherViewModel.getWeather(city);
-            mAdapter.add(weather);
-            mAdapter.notifyDataSetChanged();
-
+        else{
+            mAdapter.clear();
+            mAdapter.add(model);
         }
+        mAdapter.notifyDataSetChanged();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
